@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central Técnica Leite | Solicitação de Agenda</title>
+  <meta name="description" content="Central Técnica Leite — Solicitação de Agenda Técnica para demandas dos técnicos de leite." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="topbar" aria-label="Topo">
+      <div class="brand-card">
+        <img src="assets/logo-alta-com-frase.jpg" alt="Alta - Criar Valor, Construir Confiança, Entregar Resultados" class="logo" />
+      </div>
+      <div class="top-actions">
+        <a class="ghost-link" href="#fluxo">Como funciona</a>
+        <a class="ghost-link" href="#formulario">Solicitar agenda</a>
+      </div>
+    </nav>
+
+    <section class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Programas e Serviços de Leite</p>
+        <h1>Central Técnica Leite</h1>
+        <h2>Solicitação de Agenda Técnica</h2>
+        <p class="lead">
+          Canal único para Distritais e Regionais registrarem demandas técnicas, permitindo triagem,
+          priorização, validação de agenda e retorno formal por e-mail.
+        </p>
+        <div class="hero-badges" aria-label="Benefícios do fluxo">
+          <span>Entrada padronizada</span>
+          <span>Status rastreável</span>
+          <span>Retorno por e-mail</span>
+        </div>
+      </div>
+
+      <aside class="status-card" aria-label="Resumo do processo">
+        <div class="status-icon">CTL</div>
+        <h3>Fluxo da demanda</h3>
+        <ol>
+          <li><strong>Recebida</strong><span>Registro da solicitação e ID automático.</span></li>
+          <li><strong>Triagem</strong><span>Avaliação de prioridade, objetivo e informações.</span></li>
+          <li><strong>Agenda</strong><span>Cruzamento com disponibilidade do técnico demandado.</span></li>
+          <li><strong>Retorno</strong><span>Aprovação, ajuste de data ou negativa justificada.</span></li>
+        </ol>
+      </aside>
+    </section>
+  </header>
+
+  <main>
+    <section class="process-section" id="fluxo">
+      <div class="section-title">
+        <p class="eyebrow">Governança</p>
+        <h2>O formulário não é só uma entrada de dados. Ele inicia uma fila técnica.</h2>
+        <p>
+          Depois do envio, a equipe avalia a demanda, cruza com a agenda do técnico solicitado e retorna ao solicitante por e-mail.
+        </p>
+      </div>
+      <div class="process-grid">
+        <article>
+          <span class="step">01</span>
+          <h3>Solicitação</h3>
+          <p>O Distrital ou Regional registra cliente, objetivo, urgência, impacto e datas sugeridas.</p>
+        </article>
+        <article>
+          <span class="step">02</span>
+          <h3>Triagem</h3>
+          <p>A equipe técnica verifica clareza da demanda, prioridade e aderência ao escopo.</p>
+        </article>
+        <article>
+          <span class="step">03</span>
+          <h3>Agenda</h3>
+          <p>A disponibilidade do técnico é avaliada e, se necessário, são propostas alternativas.</p>
+        </article>
+        <article>
+          <span class="step">04</span>
+          <h3>Retorno</h3>
+          <p>O solicitante recebe uma resposta formal: aprovada, ajustar data, pendente ou negada.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="form-shell" id="formulario">
+      <div class="form-intro">
+        <div>
+          <p class="eyebrow">Nova demanda</p>
+          <h2>Solicitar agenda técnica</h2>
+          <p>
+            Preencha as informações abaixo com o máximo de clareza. O envio não garante aprovação automática da agenda.
+          </p>
+        </div>
+        <div class="sla-box">
+          <span>Status inicial</span>
+          <strong>Recebida</strong>
+          <small>Retorno após triagem e validação da agenda.</small>
+        </div>
+      </div>
+
+      <form id="demandaForm" novalidate>
+        <input type="hidden" id="demandaId" name="demandaId" />
+        <input type="hidden" id="prioridadeCalculada" name="prioridadeCalculada" />
+
+        <div class="form-layout">
+          <div class="form-main">
+            <fieldset class="form-card">
+              <legend>1. Dados do solicitante</legend>
+              <div class="grid two">
+                <label>
+                  Nome do solicitante <span>*</span>
+                  <input type="text" name="nomeSolicitante" required placeholder="Ex.: Rafael Azevedo" />
+                </label>
+                <label>
+                  E-mail de retorno <span>*</span>
+                  <input type="email" name="emailSolicitante" required placeholder="nome@empresa.com" />
+                </label>
+                <label>
+                  Função <span>*</span>
+                  <select name="funcao" required>
+                    <option value="">Selecione</option>
+                    <option>Distrital</option>
+                    <option>Regional</option>
+                    <option>Gerente</option>
+                    <option>Equipe técnica</option>
+                    <option>Outro</option>
+                  </select>
+                </label>
+                <label>
+                  Regional/Distrital <span>*</span>
+                  <input type="text" name="regional" required placeholder="Ex.: Triângulo Mineiro" />
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>2. Cliente ou fazenda</legend>
+              <div class="grid two">
+                <label>
+                  Nome do cliente/fazenda <span>*</span>
+                  <input type="text" name="cliente" required placeholder="Ex.: Fazenda Santa Rita" />
+                </label>
+                <label>
+                  Cidade/UF <span>*</span>
+                  <input type="text" name="cidadeUf" required placeholder="Ex.: Uberlândia/MG" />
+                </label>
+                <label>
+                  Perfil da conta
+                  <select name="perfilConta">
+                    <option value="">Selecione</option>
+                    <option>Cliente estratégico</option>
+                    <option>Cliente recorrente</option>
+                    <option>Prospect</option>
+                    <option>Cliente em recuperação</option>
+                    <option>Outro</option>
+                  </select>
+                </label>
+                <label>
+                  Existe oportunidade comercial vinculada?
+                  <select name="oportunidadeComercial">
+                    <option value="">Selecione</option>
+                    <option>Sim</option>
+                    <option>Não</option>
+                    <option>A definir</option>
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>3. Informações da demanda</legend>
+              <div class="grid two">
+                <label>
+                  Tipo de demanda <span>*</span>
+                  <select name="tipoDemanda" required>
+                    <option value="">Selecione</option>
+                    <option>Visita técnica em fazenda</option>
+                    <option>Treinamento de equipe</option>
+                    <option>Apoio em evento</option>
+                    <option>Alta CRIA</option>
+                    <option>Padrão Ouro</option>
+                    <option>Colostro, bezerras e neonatos</option>
+                    <option>Planejamento técnico-comercial</option>
+                    <option>Diagnóstico de manejo</option>
+                    <option>Problema emergencial</option>
+                    <option>Outro</option>
+                  </select>
+                </label>
+                <label>
+                  A demanda pode ser atendida remotamente?
+                  <select name="podeRemoto">
+                    <option value="">Selecione</option>
+                    <option>Sim</option>
+                    <option>Não</option>
+                    <option>Parcialmente</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Objetivo da visita ou atendimento <span>*</span>
+                <textarea name="objetivo" required rows="4" maxlength="900" placeholder="Descreva o objetivo da demanda e o resultado esperado. Ex.: treinar equipe de maternidade, avaliar protocolo de colostro, apoiar negociação estratégica etc."></textarea>
+              </label>
+              <label>
+                Contexto adicional, dados ou links úteis
+                <textarea name="contexto" rows="3" maxlength="900" placeholder="Inclua informações da fazenda, indicadores, fotos em link, planilhas, histórico do cliente ou observações importantes."></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>4. Técnico e agenda</legend>
+              <div class="grid two">
+                <label>
+                  Técnico demandado ou preferencial <span>*</span>
+                  <input type="text" name="tecnicoPreferencial" required placeholder="Nome do técnico solicitado" />
+                </label>
+                <label>
+                  Esse técnico é obrigatório?
+                  <select name="tecnicoObrigatorio">
+                    <option value="">Selecione</option>
+                    <option>Sim, precisa ser esse técnico</option>
+                    <option>Não, pode ser outro técnico</option>
+                    <option>A equipe técnica pode definir</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Justificativa para o técnico indicado
+                <textarea name="justificativaTecnico" rows="3" maxlength="700" placeholder="Explique se há histórico com o cliente, especialidade necessária ou contexto estratégico."></textarea>
+              </label>
+              <div class="grid three">
+                <label>
+                  Data ideal <span>*</span>
+                  <input type="date" name="dataIdeal" required />
+                </label>
+                <label>
+                  Segunda opção
+                  <input type="date" name="dataOpcao2" />
+                </label>
+                <label>
+                  Terceira opção
+                  <input type="date" name="dataOpcao3" />
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>5. Prioridade e impacto</legend>
+              <div class="grid two">
+                <label>
+                  Urgência <span>*</span>
+                  <select name="urgencia" id="urgencia" required>
+                    <option value="">Selecione</option>
+                    <option value="ate7">Até 7 dias</option>
+                    <option value="8a15">8 a 15 dias</option>
+                    <option value="16a30">16 a 30 dias</option>
+                    <option value="semUrgencia">Sem urgência definida</option>
+                  </select>
+                </label>
+                <label>
+                  Impacto principal <span>*</span>
+                  <select name="impacto" id="impacto" required>
+                    <option value="">Selecione</option>
+                    <option value="tecnico">Técnico</option>
+                    <option value="comercial">Comercial</option>
+                    <option value="estrategico">Relacionamento estratégico</option>
+                    <option value="recuperacao">Recuperação de cliente</option>
+                    <option value="venda">Suporte a venda/proposta</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </label>
+                <label>
+                  Risco se não houver atendimento
+                  <select name="risco" id="risco">
+                    <option value="">Selecione</option>
+                    <option value="alto">Alto</option>
+                    <option value="medio">Médio</option>
+                    <option value="baixo">Baixo</option>
+                  </select>
+                </label>
+                <label>
+                  Prazo limite para retorno ao cliente
+                  <input type="date" name="prazoLimite" />
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card compact">
+              <legend>6. Ciência</legend>
+              <label class="checkline">
+                <input type="checkbox" name="ciencia" required />
+                <span>Estou ciente de que a solicitação será avaliada pela equipe técnica e depende da agenda, prioridade e disponibilidade do técnico demandado.</span>
+              </label>
+            </fieldset>
+
+            <div class="button-row">
+              <button type="button" class="btn secondary" id="limparBtn">Limpar</button>
+              <button type="button" class="btn tertiary" id="revisarBtn">Revisar dados</button>
+              <button type="submit" class="btn primary">Enviar solicitação</button>
+            </div>
+          </div>
+
+          <aside class="form-side">
+            <div class="side-card sticky">
+              <p class="eyebrow">Resumo automático</p>
+              <h3 id="resumoTitulo">Demanda ainda não enviada</h3>
+              <dl>
+                <div>
+                  <dt>Prioridade estimada</dt>
+                  <dd><span class="priority-pill" id="priorityPill">Aguardando dados</span></dd>
+                </div>
+                <div>
+                  <dt>Status inicial</dt>
+                  <dd>Recebida</dd>
+                </div>
+                <div>
+                  <dt>Próxima etapa</dt>
+                  <dd>Triagem técnica e validação de agenda</dd>
+                </div>
+              </dl>
+              <hr />
+              <p class="help-text">
+                A prioridade é apenas uma estimativa inicial. A decisão final considera agenda, escopo técnico e relevância da demanda.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <dialog id="reviewDialog" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="fecharModal" aria-label="Fechar">×</button>
+      <p class="eyebrow">Revisão</p>
+      <h2>Confira os principais dados</h2>
+      <div id="reviewContent" class="review-content"></div>
+      <div class="button-row right">
+        <button class="btn secondary" id="fecharModal2">Continuar editando</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="successDialog" class="modal">
+    <div class="modal-content success">
+      <button class="modal-close" id="fecharSucesso" aria-label="Fechar">×</button>
+      <div class="success-icon">✓</div>
+      <p class="eyebrow">Solicitação registrada</p>
+      <h2>Demanda recebida com sucesso</h2>
+      <p id="successText"></p>
+      <p class="help-text">
+        Um e-mail de confirmação pode ser enviado automaticamente após configurar o endpoint do Google Apps Script.
+      </p>
+    </div>
+  </dialog>
+
+  <footer>
+    <p>Central Técnica Leite — Programas e Serviços de Leite</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
