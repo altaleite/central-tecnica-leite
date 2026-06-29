@@ -26,24 +26,22 @@ const HEADERS = [
   'E-mail do solicitante',
   'Função',
   'Regional/Distrital',
-  'Cliente/Fazenda',
-  'Cidade/UF',
-  'Perfil da conta',
-  'Oportunidade comercial',
   'Tipo de demanda',
   'Pode ser remoto?',
   'Objetivo',
-  'Contexto adicional',
-  'Técnico preferencial',
+  'Informações adicionais',
+  'Técnico demandado',
   'Técnico obrigatório?',
   'Justificativa do técnico',
-  'Data ideal',
-  'Segunda opção',
-  'Terceira opção',
+  'Opção 1 — início',
+  'Opção 1 — fim',
+  'Opção 2 — início',
+  'Opção 2 — fim',
+  'Opção 3 — início',
+  'Opção 3 — fim',
   'Urgência',
   'Impacto principal',
   'Risco',
-  'Prazo limite',
   'Data de retorno',
   'Decisão',
   'Motivo da negativa/ajuste',
@@ -69,10 +67,6 @@ function doPost(e) {
       payload.emailSolicitante || '',
       payload.funcao || '',
       payload.regional || '',
-      payload.cliente || '',
-      payload.cidadeUf || '',
-      payload.perfilConta || '',
-      payload.oportunidadeComercial || '',
       payload.tipoDemanda || '',
       payload.podeRemoto || '',
       payload.objetivo || '',
@@ -80,13 +74,15 @@ function doPost(e) {
       payload.tecnicoPreferencial || '',
       payload.tecnicoObrigatorio || '',
       payload.justificativaTecnico || '',
-      payload.dataIdeal || '',
-      payload.dataOpcao2 || '',
-      payload.dataOpcao3 || '',
+      payload.opcao1Inicio || '',
+      payload.opcao1Fim || '',
+      payload.opcao2Inicio || '',
+      payload.opcao2Fim || '',
+      payload.opcao3Inicio || '',
+      payload.opcao3Fim || '',
       payload.urgencia || '',
       payload.impacto || '',
       payload.risco || '',
-      payload.prazoLimite || '',
       '',
       '',
       '',
@@ -114,7 +110,7 @@ function setupSheet() {
   sheet.clear();
   sheet.appendRow(HEADERS);
   sheet.setFrozenRows(1);
-  sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#123a7a').setFontColor('#ffffff');
+  sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#003b79').setFontColor('#ffffff');
   sheet.autoResizeColumns(1, HEADERS.length);
 }
 
@@ -137,6 +133,11 @@ function gerarId_() {
   return `CTL-${stamp}`;
 }
 
+function periodo_(inicio, fim) {
+  if (!inicio && !fim) return '';
+  return `${inicio || ''} até ${fim || ''}`;
+}
+
 function enviarEmailConfirmacao_(payload, id) {
   const email = payload.emailSolicitante;
   if (!email) return;
@@ -148,11 +149,12 @@ Recebemos sua solicitação de agenda técnica.
 
 ID da demanda: ${id}
 Status inicial: Recebida
-Cliente/Fazenda: ${payload.cliente || ''}
-Cidade/UF: ${payload.cidadeUf || ''}
 Tipo de demanda: ${payload.tipoDemanda || ''}
-Técnico preferencial: ${payload.tecnicoPreferencial || ''}
-Data ideal: ${payload.dataIdeal || ''}
+Técnico demandado: ${payload.tecnicoPreferencial || ''}
+Opção 1: ${periodo_(payload.opcao1Inicio, payload.opcao1Fim)}
+Opção 2: ${periodo_(payload.opcao2Inicio, payload.opcao2Fim)}
+Opção 3: ${periodo_(payload.opcao3Inicio, payload.opcao3Fim)}
+Urgência: ${payload.urgencia || ''}
 Prioridade estimada: ${payload.prioridadeCalculada || ''}
 
 A equipe técnica irá avaliar a demanda, cruzar com a agenda do técnico demandado e retornar por e-mail com aprovação, ajuste de data, solicitação de informações ou negativa justificada.
@@ -170,11 +172,11 @@ function enviarEmailTriagem_(payload, id) {
 ID: ${id}
 Solicitante: ${payload.nomeSolicitante || ''} <${payload.emailSolicitante || ''}>
 Regional/Distrital: ${payload.regional || ''}
-Cliente/Fazenda: ${payload.cliente || ''}
-Cidade/UF: ${payload.cidadeUf || ''}
 Tipo de demanda: ${payload.tipoDemanda || ''}
-Técnico preferencial: ${payload.tecnicoPreferencial || ''}
-Data ideal: ${payload.dataIdeal || ''}
+Técnico demandado: ${payload.tecnicoPreferencial || ''}
+Opção 1: ${periodo_(payload.opcao1Inicio, payload.opcao1Fim)}
+Opção 2: ${periodo_(payload.opcao2Inicio, payload.opcao2Fim)}
+Opção 3: ${periodo_(payload.opcao3Inicio, payload.opcao3Fim)}
 Urgência: ${payload.urgencia || ''}
 Impacto: ${payload.impacto || ''}
 Risco: ${payload.risco || ''}
@@ -183,7 +185,7 @@ Prioridade estimada: ${payload.prioridadeCalculada || ''}
 Objetivo:
 ${payload.objetivo || ''}
 
-Contexto adicional:
+Informações adicionais:
 ${payload.contexto || ''}
 
 Próxima etapa: avaliar escopo, prioridade e disponibilidade de agenda.`;

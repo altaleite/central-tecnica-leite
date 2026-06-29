@@ -13,12 +13,11 @@ const requiredLabels = {
   emailSolicitante: 'E-mail de retorno',
   funcao: 'Função',
   regional: 'Regional/Distrital',
-  cliente: 'Nome do cliente/fazenda',
-  cidadeUf: 'Cidade/UF',
   tipoDemanda: 'Tipo de demanda',
-  objetivo: 'Objetivo da visita ou atendimento',
-  tecnicoPreferencial: 'Técnico demandado ou preferencial',
-  dataIdeal: 'Data ideal',
+  objetivo: 'Objetivo da solicitação',
+  tecnicoPreferencial: 'Técnico demandado',
+  opcao1Inicio: 'Opção 1 — início',
+  opcao1Fim: 'Opção 1 — fim',
   urgencia: 'Urgência',
   impacto: 'Impacto principal',
   ciencia: 'Ciência'
@@ -49,10 +48,9 @@ function calcularPrioridade() {
   const risco = form.risco?.value;
   let score = 0;
 
-  if (urgencia === 'ate7') score += 4;
-  if (urgencia === '8a15') score += 3;
-  if (urgencia === '16a30') score += 2;
-  if (urgencia === 'semUrgencia') score += 1;
+  if (urgencia === '1mes') score += 4;
+  if (urgencia === '2a3') score += 2;
+  if (urgencia === 'acima3') score += 1;
 
   if (['estrategico', 'recuperacao', 'venda'].includes(impacto)) score += 3;
   if (['comercial', 'tecnico'].includes(impacto)) score += 2;
@@ -74,10 +72,10 @@ function atualizarResumo() {
   priorityPill.className = `priority-pill ${prioridade.className}`.trim();
   prioridadeInput.value = prioridade.label;
 
-  const cliente = form.cliente?.value?.trim();
+  const tipo = form.tipoDemanda?.value?.trim();
   const tecnico = form.tecnicoPreferencial?.value?.trim();
-  resumoTitulo.textContent = cliente
-    ? `${cliente}${tecnico ? ` · ${tecnico}` : ''}`
+  resumoTitulo.textContent = tipo
+    ? `${tipo}${tecnico ? ` · ${tecnico}` : ''}`
     : 'Demanda ainda não enviada';
 }
 
@@ -102,6 +100,27 @@ function validarForm() {
     form.emailSolicitante.classList.add('error');
   }
 
+  const inicio1 = form.opcao1Inicio.value;
+  const fim1 = form.opcao1Fim.value;
+  if (inicio1 && fim1 && new Date(fim1) <= new Date(inicio1)) {
+    errors.push('Opção 1 com fim posterior ao início');
+    form.opcao1Fim.classList.add('error');
+  }
+
+  [['opcao2Inicio', 'opcao2Fim', 'Opção 2'], ['opcao3Inicio', 'opcao3Fim', 'Opção 3']].forEach(([inicio, fim, label]) => {
+    const ini = form.elements[inicio].value;
+    const end = form.elements[fim].value;
+    if ((ini && !end) || (!ini && end)) {
+      errors.push(`${label} com início e fim preenchidos`);
+      form.elements[inicio].classList.add('error');
+      form.elements[fim].classList.add('error');
+    }
+    if (ini && end && new Date(end) <= new Date(ini)) {
+      errors.push(`${label} com fim posterior ao início`);
+      form.elements[fim].classList.add('error');
+    }
+  });
+
   if (errors.length) {
     alert(`Revise os campos obrigatórios:\n\n- ${errors.join('\n- ')}`);
     const firstError = form.querySelector('.error');
@@ -111,15 +130,23 @@ function validarForm() {
   return true;
 }
 
+function formatDateTime(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+}
+
 function montarRevisao(obj) {
   const rows = [
     ['ID da demanda', obj.demandaId],
     ['Solicitante', `${obj.nomeSolicitante} · ${obj.emailSolicitante}`],
     ['Regional/Distrital', obj.regional],
-    ['Cliente/Fazenda', `${obj.cliente} · ${obj.cidadeUf}`],
     ['Tipo de demanda', obj.tipoDemanda],
-    ['Técnico preferencial', obj.tecnicoPreferencial],
-    ['Data ideal', obj.dataIdeal],
+    ['Técnico demandado', obj.tecnicoPreferencial],
+    ['Opção 1', `${formatDateTime(obj.opcao1Inicio)} até ${formatDateTime(obj.opcao1Fim)}`],
+    ['Opção 2', obj.opcao2Inicio || obj.opcao2Fim ? `${formatDateTime(obj.opcao2Inicio)} até ${formatDateTime(obj.opcao2Fim)}` : 'Não informado'],
+    ['Opção 3', obj.opcao3Inicio || obj.opcao3Fim ? `${formatDateTime(obj.opcao3Inicio)} até ${formatDateTime(obj.opcao3Fim)}` : 'Não informado'],
     ['Urgência', form.urgencia.options[form.urgencia.selectedIndex]?.text || ''],
     ['Impacto', form.impacto.options[form.impacto.selectedIndex]?.text || ''],
     ['Prioridade estimada', obj.prioridadeCalculada],
