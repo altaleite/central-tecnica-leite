@@ -7,15 +7,15 @@
   <meta name="description" content="Central Técnica Leite — Solicitação de Agenda Técnica para demandas dos técnicos de leite." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
+  <header class="hero" id="topo">
     <nav class="topbar" aria-label="Topo">
-      <div class="brand-card">
+      <a class="brand-card" href="#topo" aria-label="Central Técnica Leite">
         <img src="assets/logo-alta-com-frase.jpg" alt="Alta - Criar Valor, Construir Confiança, Entregar Resultados" class="logo" />
-      </div>
+      </a>
       <div class="top-actions">
         <a class="ghost-link" href="#fluxo">Como funciona</a>
         <a class="ghost-link" href="#formulario">Solicitar agenda</a>
@@ -28,58 +28,107 @@
         <h1>Central Técnica Leite</h1>
         <h2>Solicitação de Agenda Técnica</h2>
         <p class="lead">
-          Canal único para Distritais e Regionais registrarem demandas técnicas, permitindo triagem,
-          priorização, validação de agenda e retorno formal por e-mail.
+          Um canal único para organizar demandas de Distritais e Regionais, validar prioridade,
+          cruzar agenda técnica e devolver uma resposta formal com mais rastreabilidade.
         </p>
         <div class="hero-badges" aria-label="Benefícios do fluxo">
           <span>Entrada padronizada</span>
+          <span>Triagem técnica</span>
           <span>Status rastreável</span>
           <span>Retorno por e-mail</span>
         </div>
+        <div class="hero-actions">
+          <a class="btn primary" href="#formulario">Abrir solicitação</a>
+          <a class="btn secondary" href="#fluxo">Ver fluxo</a>
+        </div>
       </div>
 
-      <aside class="status-card" aria-label="Resumo do processo">
-        <div class="status-icon">CTL</div>
-        <h3>Fluxo da demanda</h3>
-        <ol>
-          <li><strong>Recebida</strong><span>Registro da solicitação e ID automático.</span></li>
-          <li><strong>Triagem</strong><span>Avaliação de prioridade, objetivo e informações.</span></li>
-          <li><strong>Agenda</strong><span>Cruzamento com disponibilidade do técnico demandado.</span></li>
-          <li><strong>Retorno</strong><span>Aprovação, ajuste de data ou negativa justificada.</span></li>
-        </ol>
+      <aside class="command-card" aria-label="Resumo do processo">
+        <div class="command-head">
+          <span class="status-dot"></span>
+          <div>
+            <p>Fluxo operacional</p>
+            <strong>Demanda → Agenda → Retorno</strong>
+          </div>
+        </div>
+        <div class="pipeline">
+          <div>
+            <span>01</span>
+            <strong>Recebida</strong>
+            <small>ID automático e alerta interno.</small>
+          </div>
+          <div>
+            <span>02</span>
+            <strong>Triagem</strong>
+            <small>Escopo, prioridade e informações.</small>
+          </div>
+          <div>
+            <span>03</span>
+            <strong>Agenda</strong>
+            <small>Validação com o técnico demandado.</small>
+          </div>
+          <div>
+            <span>04</span>
+            <strong>Retorno</strong>
+            <small>Aprovação, ajuste ou negativa justificada.</small>
+          </div>
+        </div>
       </aside>
+    </section>
+
+    <section class="metric-strip" aria-label="Diferenciais do processo">
+      <article>
+        <span>SLA</span>
+        <strong>retorno formal</strong>
+        <p>evita demanda perdida em e-mail</p>
+      </article>
+      <article>
+        <span>ID</span>
+        <strong>ticket único</strong>
+        <p>histórico e rastreabilidade</p>
+      </article>
+      <article>
+        <span>Status</span>
+        <strong>fila técnica</strong>
+        <p>recebida, triagem, agenda e decisão</p>
+      </article>
+      <article>
+        <span>Gestão</span>
+        <strong>base para dashboard</strong>
+        <p>demanda por regional, técnico e tipo</p>
+      </article>
     </section>
   </header>
 
   <main>
     <section class="process-section" id="fluxo">
-      <div class="section-title">
-        <p class="eyebrow">Governança</p>
-        <h2>O formulário não é só uma entrada de dados. Ele inicia uma fila técnica.</h2>
+      <div class="section-title centered">
+        <p class="eyebrow">Governança da agenda</p>
+        <h2>O formulário deixa de ser apenas cadastro e passa a abrir uma fila técnica.</h2>
         <p>
-          Depois do envio, a equipe avalia a demanda, cruza com a agenda do técnico solicitado e retorna ao solicitante por e-mail.
+          O objetivo é padronizar a entrada, reduzir retrabalho, priorizar melhor e dar retorno claro para quem solicitou.
         </p>
       </div>
       <div class="process-grid">
         <article>
           <span class="step">01</span>
           <h3>Solicitação</h3>
-          <p>O Distrital ou Regional registra cliente, objetivo, urgência, impacto e datas sugeridas.</p>
+          <p>O solicitante informa cliente, objetivo, urgência, impacto, técnico preferencial e datas possíveis.</p>
         </article>
         <article>
           <span class="step">02</span>
           <h3>Triagem</h3>
-          <p>A equipe técnica verifica clareza da demanda, prioridade e aderência ao escopo.</p>
+          <p>A equipe técnica avalia se a demanda está clara, se tem prioridade e se há informações suficientes.</p>
         </article>
         <article>
           <span class="step">03</span>
           <h3>Agenda</h3>
-          <p>A disponibilidade do técnico é avaliada e, se necessário, são propostas alternativas.</p>
+          <p>A disponibilidade do técnico é conferida e, quando necessário, são propostas datas ou formatos alternativos.</p>
         </article>
         <article>
           <span class="step">04</span>
           <h3>Retorno</h3>
-          <p>O solicitante recebe uma resposta formal: aprovada, ajustar data, pendente ou negada.</p>
+          <p>O solicitante recebe resposta formal: aprovada, aprovada com ajuste, pendente ou negada com justificativa.</p>
         </article>
       </div>
     </section>
@@ -90,7 +139,7 @@
           <p class="eyebrow">Nova demanda</p>
           <h2>Solicitar agenda técnica</h2>
           <p>
-            Preencha as informações abaixo com o máximo de clareza. O envio não garante aprovação automática da agenda.
+            Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem, prioridade e disponibilidade do técnico.
           </p>
         </div>
         <div class="sla-box">
@@ -107,7 +156,8 @@
         <div class="form-layout">
           <div class="form-main">
             <fieldset class="form-card">
-              <legend>1. Dados do solicitante</legend>
+              <legend><span>1</span> Dados do solicitante</legend>
+              <p class="card-help">Identifique quem está abrindo a demanda e quem deve receber o retorno formal.</p>
               <div class="grid two">
                 <label>
                   Nome do solicitante <span>*</span>
@@ -136,7 +186,8 @@
             </fieldset>
 
             <fieldset class="form-card">
-              <legend>2. Cliente ou fazenda</legend>
+              <legend><span>2</span> Cliente ou fazenda</legend>
+              <p class="card-help">Dados mínimos para contextualizar a visita, logística e relevância da conta.</p>
               <div class="grid two">
                 <label>
                   Nome do cliente/fazenda <span>*</span>
@@ -169,8 +220,9 @@
               </div>
             </fieldset>
 
-            <fieldset class="form-card">
-              <legend>3. Informações da demanda</legend>
+            <fieldset class="form-card highlight-card">
+              <legend><span>3</span> Informações da demanda</legend>
+              <p class="card-help">Esta é a parte mais importante: descreva o objetivo e o resultado esperado do atendimento.</p>
               <div class="grid two">
                 <label>
                   Tipo de demanda <span>*</span>
@@ -209,7 +261,8 @@
             </fieldset>
 
             <fieldset class="form-card">
-              <legend>4. Técnico e agenda</legend>
+              <legend><span>4</span> Técnico e agenda</legend>
+              <p class="card-help">Informe preferência de técnico e datas alternativas para facilitar o encaixe da agenda.</p>
               <div class="grid two">
                 <label>
                   Técnico demandado ou preferencial <span>*</span>
@@ -246,7 +299,8 @@
             </fieldset>
 
             <fieldset class="form-card">
-              <legend>5. Prioridade e impacto</legend>
+              <legend><span>5</span> Prioridade e impacto</legend>
+              <p class="card-help">Esses campos ajudam a ordenar a fila e definir a urgência real da demanda.</p>
               <div class="grid two">
                 <label>
                   Urgência <span>*</span>
@@ -287,7 +341,7 @@
             </fieldset>
 
             <fieldset class="form-card compact">
-              <legend>6. Ciência</legend>
+              <legend><span>6</span> Ciência</legend>
               <label class="checkline">
                 <input type="checkbox" name="ciencia" required />
                 <span>Estou ciente de que a solicitação será avaliada pela equipe técnica e depende da agenda, prioridade e disponibilidade do técnico demandado.</span>
@@ -321,7 +375,7 @@
               </dl>
               <hr />
               <p class="help-text">
-                A prioridade é apenas uma estimativa inicial. A decisão final considera agenda, escopo técnico e relevância da demanda.
+                A prioridade é apenas uma estimativa inicial. A decisão final considera agenda, escopo técnico, relevância da conta e disponibilidade.
               </p>
             </div>
           </aside>

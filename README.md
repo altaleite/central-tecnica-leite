@@ -1,57 +1,33 @@
 # Central Técnica Leite — Solicitação de Agenda
 
-Versão inicial de um formulário institucional para substituir a experiência visual do Google Forms e organizar o recebimento de demandas técnicas dos técnicos de leite.
+Versão visual atualizada para GitHub Pages.
 
-## O que está incluído
+## Como atualizar no GitHub
 
-- `index.html`: página principal do formulário.
-- `styles.css`: identidade visual, layout responsivo e componentes.
-- `app.js`: validação, geração de ID, prioridade estimada e envio.
-- `config.js`: local para configurar o endpoint do Google Apps Script.
-- `assets/logo-alta-com-frase.jpg`: logo enviada pelo usuário.
-- `apps-script/Code.gs`: backend para gravar respostas em Google Sheets e enviar e-mails.
-- `modelos/colunas-planilha.csv`: cabeçalho sugerido para a planilha de gestão.
+1. Acesse o repositório `central-tecnica-leite` no GitHub.
+2. Clique em `Add file > Upload files`.
+3. Envie os arquivos desta pasta para a raiz do repositório.
+4. Substitua os arquivos existentes quando solicitado.
+5. Faça o commit com a mensagem: `Atualização visual da Central Técnica Leite`.
+6. Aguarde 1 a 3 minutos para o GitHub Pages atualizar.
 
-## Fluxo operacional proposto
+## Atualização mais segura
 
-1. Distrital ou Regional acessa a Central Técnica Leite.
-2. Preenche a solicitação de agenda técnica.
-3. A demanda recebe um ID automático.
-4. A solicitação é registrada em uma Google Sheet.
-5. O solicitante recebe um e-mail de confirmação.
-6. A equipe técnica recebe um e-mail de triagem.
-7. A equipe avalia prioridade, agenda do técnico demandado e retorna com aprovação, ajuste de data ou negativa justificada.
+Se você já configurou o Google Apps Script no arquivo `config.js`, não substitua esse arquivo. Substitua apenas:
 
-## Como publicar no GitHub Pages
+- `index.html`
+- `styles.css`
+- `app.js`, se quiser manter a mesma versão funcional do pacote
+- `assets/logo-alta-com-frase.jpg`, se necessário
 
-1. Crie um repositório, por exemplo: `central-tecnica-leite`.
-2. Envie todos os arquivos desta pasta para o repositório.
-3. No GitHub, acesse **Settings > Pages**.
-4. Em **Build and deployment**, selecione a branch principal e a pasta `/root`.
-5. Salve e aguarde a publicação.
+## Integração com Google Sheets
 
-## Como integrar com Google Sheets
-
-1. Crie uma Google Sheet.
-2. Vá em **Extensões > Apps Script**.
-3. Cole o conteúdo de `apps-script/Code.gs`.
-4. Ajuste o e-mail em `TRIAGEM_EMAIL`.
-5. Execute `setupSheet()` uma vez para criar os cabeçalhos.
-6. Publique como **Web App**.
-7. Copie a URL terminada em `/exec`.
-8. Cole essa URL em `config.js`, no campo `GAS_ENDPOINT`.
-
-Exemplo:
+O arquivo `config.js` deve receber a URL do Web App do Apps Script:
 
 ```js
 window.CTL_CONFIG = {
-  GAS_ENDPOINT: "https://script.google.com/macros/s/SEU_ID/exec"
+  GAS_ENDPOINT: "COLE_AQUI_A_URL_DO_APPS_SCRIPT"
 };
 ```
 
-## Observações importantes
-
-- Enquanto o endpoint estiver vazio, o envio funciona em modo demonstração local no navegador.
-- Não coloque dados sensíveis de clientes diretamente no repositório público.
-- O GitHub Pages deve hospedar apenas o formulário. Os dados devem ser armazenados no Google Sheets ou em outro backend protegido.
-- A prioridade calculada é apenas uma estimativa inicial. A decisão final deve continuar sendo da equipe técnica.
+Enquanto `GAS_ENDPOINT` estiver vazio, o formulário funciona em modo demonstração local.
