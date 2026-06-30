@@ -142,7 +142,34 @@ function gerarId_() {
 
 function periodo_(inicio, fim) {
   if (!inicio && !fim) return '';
-  return `${inicio || ''} até ${fim || ''}`;
+
+  const inicioFormatado = formatarData_(inicio);
+  const fimFormatado = formatarData_(fim);
+
+  if (inicioFormatado && fimFormatado) return `${inicioFormatado} até ${fimFormatado}`;
+  if (inicioFormatado) return `Início: ${inicioFormatado}`;
+  if (fimFormatado) return `Fim: ${fimFormatado}`;
+
+  return '';
+}
+
+function formatarData_(valor) {
+  if (!valor) return '';
+
+  const texto = String(valor).trim();
+  const matchData = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (matchData) {
+    return `${matchData[3]}/${matchData[2]}/${matchData[1]}`;
+  }
+
+  try {
+    const data = new Date(texto);
+    if (isNaN(data.getTime())) return texto;
+    const tz = Session.getScriptTimeZone();
+    return Utilities.formatDate(data, tz, 'dd/MM/yyyy');
+  } catch (err) {
+    return texto;
+  }
 }
 
 function enviarEmailConfirmacao_(payload, id) {

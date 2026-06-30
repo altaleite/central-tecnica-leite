@@ -98,7 +98,7 @@ function validarForm() {
 
   const inicio1 = form.opcao1Inicio.value;
   const fim1 = form.opcao1Fim.value;
-  if (inicio1 && fim1 && new Date(fim1) <= new Date(inicio1)) {
+  if (inicio1 && fim1 && fim1 <= inicio1) {
     errors.push('Opção 1 com fim posterior ao início');
     form.opcao1Fim.classList.add('error');
   }
@@ -111,7 +111,7 @@ function validarForm() {
       form.elements[inicio].classList.add('error');
       form.elements[fim].classList.add('error');
     }
-    if (ini && end && new Date(end) <= new Date(ini)) {
+    if (ini && end && end <= ini) {
       errors.push(`${label} com fim posterior ao início`);
       form.elements[fim].classList.add('error');
     }
@@ -128,9 +128,16 @@ function validarForm() {
 
 function formatDateTime(value) {
   if (!value) return '';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+
+  const texto = String(value).trim();
+  const matchData = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (matchData) {
+    return `${matchData[3]}/${matchData[2]}/${matchData[1]}`;
+  }
+
+  const date = new Date(texto);
+  if (Number.isNaN(date.getTime())) return texto;
+  return date.toLocaleDateString('pt-BR');
 }
 
 function montarRevisao(obj) {

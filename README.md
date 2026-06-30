@@ -31,3 +31,9 @@ window.CTL_CONFIG = {
 ```
 
 Enquanto `GAS_ENDPOINT` estiver vazio, o formulário funciona em modo demonstração local.
+
+
+## v6
+
+- Campos de agenda alterados para data simples, sem horário.
+- Revisão e e-mails passam a exibir apenas data no formato dd/mm/aaaa.
