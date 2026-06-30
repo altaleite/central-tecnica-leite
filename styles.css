@@ -736,3 +736,45 @@ main {
   .brand-card.no-bg { width: min(245px, 76vw); }
   .agenda-option .grid.two { grid-template-columns: 1fr; }
 }
+
+
+/* Ajustes solicitados — remoção do resumo lateral e centralização do formulário */
+.form-intro {
+  justify-content: center;
+  text-align: center;
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-intro > div:first-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-layout {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-main {
+  width: 100%;
+}
+
+.form-shell {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main {
+  max-width: 1360px;
+}
+
+@media (max-width: 720px) {
+  .form-intro {
+    text-align: left;
+  }
+}

@@ -14,6 +14,7 @@ const requiredLabels = {
   funcao: 'Função',
   regional: 'Regional/Distrital',
   tipoDemanda: 'Tipo de demanda',
+  podeRemoto: 'Atendimento remoto possível',
   objetivo: 'Objetivo da solicitação',
   tecnicoPreferencial: 'Técnico demandado',
   opcao1Inicio: 'Opção 1 — início',
@@ -64,15 +65,23 @@ function calcularPrioridade() {
 
 function atualizarResumo() {
   const prioridade = calcularPrioridade();
-  priorityPill.textContent = prioridade.label;
-  priorityPill.className = `priority-pill ${prioridade.className}`.trim();
-  prioridadeInput.value = prioridade.label;
 
-  const tipo = form.tipoDemanda?.value?.trim();
-  const tecnico = form.tecnicoPreferencial?.value?.trim();
-  resumoTitulo.textContent = tipo
-    ? `${tipo}${tecnico ? ` · ${tecnico}` : ''}`
-    : 'Demanda ainda não enviada';
+  if (priorityPill) {
+    priorityPill.textContent = prioridade.label;
+    priorityPill.className = `priority-pill ${prioridade.className}`.trim();
+  }
+
+  if (prioridadeInput) {
+    prioridadeInput.value = prioridade.label;
+  }
+
+  if (resumoTitulo) {
+    const tipo = form.tipoDemanda?.value?.trim();
+    const tecnico = form.tecnicoPreferencial?.value?.trim();
+    resumoTitulo.textContent = tipo
+      ? `${tipo}${tecnico ? ` · ${tecnico}` : ''}`
+      : 'Demanda ainda não enviada';
+  }
 }
 
 function validarForm() {
@@ -210,6 +219,7 @@ document.getElementById('limparBtn').addEventListener('click', () => {
   if (!ok) return;
   form.reset();
   demandaIdInput.value = '';
+  configurarAtendimentoRemotoObrigatorio();
   atualizarResumo();
 });
 
@@ -220,6 +230,7 @@ document.getElementById('novaSolicitacaoBtn')?.addEventListener('click', () => {
   successDialog.close();
   form.reset();
   demandaIdInput.value = '';
+  configurarAtendimentoRemotoObrigatorio();
   atualizarResumo();
   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -242,6 +253,7 @@ form.addEventListener('submit', async (event) => {
     successDialog.showModal();
     form.reset();
     demandaIdInput.value = '';
+    configurarAtendimentoRemotoObrigatorio();
     atualizarResumo();
   } catch (error) {
     console.error(error);
@@ -251,6 +263,22 @@ form.addEventListener('submit', async (event) => {
     submitBtn.textContent = 'Enviar solicitação';
   }
 });
+
+function configurarAtendimentoRemotoObrigatorio() {
+  const campo = form?.elements?.podeRemoto;
+  if (!campo) return;
+
+  campo.required = true;
+
+  const label = campo.closest('label');
+  if (!label || label.querySelector('[data-required-star="podeRemoto"]')) return;
+
+  const star = document.createElement('span');
+  star.textContent = '*';
+  star.dataset.requiredStar = 'podeRemoto';
+  star.setAttribute('aria-hidden', 'true');
+  label.insertBefore(star, campo);
+}
 
 function limparResiduosDoNavegador() {
   // Alguns navegadores restauram automaticamente textos digitados em campos de formulário.
@@ -264,4 +292,5 @@ function limparResiduosDoNavegador() {
 window.addEventListener('pageshow', limparResiduosDoNavegador);
 window.addEventListener('load', limparResiduosDoNavegador);
 
+configurarAtendimentoRemotoObrigatorio();
 atualizarResumo();

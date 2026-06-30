@@ -81,11 +81,6 @@
             Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem, prioridade e disponibilidade do técnico demandado.
           </p>
         </div>
-        <div class="sla-box">
-          <span>Após o envio</span>
-          <strong>Nova demanda registrada</strong>
-          <small>Cada envio gera um protocolo próprio, enviado por e-mail.</small>
-        </div>
       </div>
 
       <form id="demandaForm" novalidate autocomplete="off">
@@ -145,8 +140,8 @@
                   </select>
                 </label>
                 <label>
-                  Atendimento remoto possível?
-                  <select name="podeRemoto">
+                  Atendimento remoto possível? <span>*</span>
+                  <select name="podeRemoto" required>
                     <option value="">Selecione</option>
                     <option>Sim</option>
                     <option>Não</option>
@@ -297,35 +292,6 @@
               <button type="submit" class="btn primary">Enviar solicitação</button>
             </div>
           </div>
-
-          <aside class="form-side">
-            <div class="side-card sticky">
-              <p class="eyebrow">Resumo automático</p>
-              <h3 id="resumoTitulo">Demanda ainda não enviada</h3>
-              <dl>
-                <div>
-                  <dt>Prioridade estimada</dt>
-                  <dd><span class="priority-pill" id="priorityPill">Aguardando dados</span></dd>
-                </div>
-                <div>
-                  <dt>Status da nova solicitação</dt>
-                  <dd>Recebida</dd>
-                </div>
-                <div>
-                  <dt>Protocolo</dt>
-                  <dd>Gerado após o envio</dd>
-                </div>
-                <div>
-                  <dt>Próxima etapa</dt>
-                  <dd>Triagem técnica e validação de agenda</dd>
-                </div>
-              </dl>
-              <hr />
-              <p class="help-text">
-                A prioridade é apenas uma estimativa inicial. Cada envio gera uma nova demanda independente, mesmo quando o solicitante é o mesmo.
-              </p>
-            </div>
-          </aside>
         </div>
       </form>
     </section>
