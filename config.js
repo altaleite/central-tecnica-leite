@@ -1,4 +1,5 @@
-// Endpoint do Google Apps Script publicado como Web App.
+// Configure este endpoint depois de publicar o Google Apps Script como Web App.
+// Exemplo: window.CTL_CONFIG = { GAS_ENDPOINT: "https://script.google.com/macros/s/SEU_ID/exec" };
 window.CTL_CONFIG = {
-  GAS_ENDPOINT: "https://script.google.com/macros/s/AKfycbwnCGDAKvyMQVJH59ZCAnxIgqghfkgQ54oyuGO99aLNJVkp4BCxLo-YTPOZ9UjhiTkQ/exec"
+  GAS_ENDPOINT: ""
 };

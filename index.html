@@ -82,13 +82,13 @@
           </p>
         </div>
         <div class="sla-box">
-          <span>Status inicial</span>
-          <strong>Recebida</strong>
-          <small>Retorno após triagem e validação da agenda.</small>
+          <span>Após o envio</span>
+          <strong>Nova demanda registrada</strong>
+          <small>Cada envio gera um protocolo próprio, enviado por e-mail.</small>
         </div>
       </div>
 
-      <form id="demandaForm" novalidate>
+      <form id="demandaForm" novalidate autocomplete="off">
         <input type="hidden" id="demandaId" name="demandaId" />
         <input type="hidden" id="prioridadeCalculada" name="prioridadeCalculada" />
 
@@ -160,7 +160,7 @@
               </label>
               <label>
                 Informações adicionais
-                <textarea name="contexto" rows="3" maxlength="900" placeholder="Inclua dados relevantes, contexto, links, indicadores, histórico ou observações importantes."></textarea>
+                <textarea name="contexto" rows="3" maxlength="900" autocomplete="off" placeholder="Inclua dados relevantes, contexto, links, indicadores, histórico ou observações importantes."></textarea>
               </label>
             </fieldset>
 
@@ -308,8 +308,12 @@
                   <dd><span class="priority-pill" id="priorityPill">Aguardando dados</span></dd>
                 </div>
                 <div>
-                  <dt>Status inicial</dt>
+                  <dt>Status da nova solicitação</dt>
                   <dd>Recebida</dd>
+                </div>
+                <div>
+                  <dt>Protocolo</dt>
+                  <dd>Gerado após o envio</dd>
                 </div>
                 <div>
                   <dt>Próxima etapa</dt>
@@ -318,7 +322,7 @@
               </dl>
               <hr />
               <p class="help-text">
-                A prioridade é apenas uma estimativa inicial. A decisão final considera agenda, escopo técnico, relevância e disponibilidade.
+                A prioridade é apenas uma estimativa inicial. Cada envio gera uma nova demanda independente, mesmo quando o solicitante é o mesmo.
               </p>
             </div>
           </aside>
@@ -344,11 +348,14 @@
       <button class="modal-close" id="fecharSucesso" aria-label="Fechar">×</button>
       <div class="success-icon">✓</div>
       <p class="eyebrow">Solicitação registrada</p>
-      <h2>Demanda recebida com sucesso</h2>
+      <h2>Solicitação recebida com sucesso</h2>
       <p id="successText"></p>
       <p class="help-text">
-        Um e-mail de confirmação pode ser enviado automaticamente após configurar o endpoint do Google Apps Script.
+        O protocolo da demanda será enviado por e-mail. Para abrir outro pedido, basta iniciar uma nova solicitação.
       </p>
+      <div class="button-row center">
+        <button class="btn primary" id="novaSolicitacaoBtn" type="button">Nova solicitação</button>
+      </div>
     </div>
   </dialog>
 

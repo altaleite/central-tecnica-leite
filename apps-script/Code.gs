@@ -13,7 +13,7 @@
 
 const CONFIG = {
   SHEET_NAME: 'Demandas',
-  TRIAGEM_EMAIL: 'equipe.tecnica.leite@empresa.com',
+  TRIAGEM_EMAIL: 'paula.tiveron@altagenetics.com, rafael.azevedo@altagenetics.com',
   REMETENTE_NOME: 'Central Técnica Leite'
 };
 
@@ -55,7 +55,7 @@ function doPost(e) {
 
   try {
     const payload = parsePayload_(e);
-    const id = payload.demandaId || gerarId_();
+    const id = gerarId_();
     const sheet = getSheet_();
 
     sheet.appendRow([
@@ -129,8 +129,15 @@ function parsePayload_(e) {
 
 function gerarId_() {
   const tz = Session.getScriptTimeZone();
-  const stamp = Utilities.formatDate(new Date(), tz, 'yyyyMMdd-HHmmss');
-  return `CTL-${stamp}`;
+  const ano = Utilities.formatDate(new Date(), tz, 'yy');
+  const props = PropertiesService.getScriptProperties();
+  const chave = `CTL_SEQ_${ano}`;
+  const atual = Number(props.getProperty(chave) || '0');
+  const proximo = atual + 1;
+
+  props.setProperty(chave, String(proximo));
+
+  return `CTL-${ano}-${String(proximo).padStart(3, '0')}`;
 }
 
 function periodo_(inicio, fim) {
@@ -147,7 +154,7 @@ function enviarEmailConfirmacao_(payload, id) {
 
 Recebemos sua solicitação de agenda técnica.
 
-ID da demanda: ${id}
+Protocolo da demanda: ${id}
 Status inicial: Recebida
 Tipo de demanda: ${payload.tipoDemanda || ''}
 Técnico demandado: ${payload.tecnicoPreferencial || ''}
@@ -169,7 +176,7 @@ function enviarEmailTriagem_(payload, id) {
   const subject = `[${id}] Nova demanda técnica para triagem`;
   const body = `Nova demanda técnica recebida.
 
-ID: ${id}
+Protocolo: ${id}
 Solicitante: ${payload.nomeSolicitante || ''} <${payload.emailSolicitante || ''}>
 Regional/Distrital: ${payload.regional || ''}
 Tipo de demanda: ${payload.tipoDemanda || ''}

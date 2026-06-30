@@ -23,19 +23,15 @@ const requiredLabels = {
   ciencia: 'Ciência'
 };
 
-function gerarId() {
-  const now = new Date();
-  const pad = (n) => String(n).padStart(2, '0');
-  const date = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
-  const time = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-  return `CTL-${date}-${time}`;
+function mensagemProtocolo() {
+  const ano = String(new Date().getFullYear()).slice(-2);
+  return `Será gerado após o envio, no padrão CTL-${ano}-001, CTL-${ano}-002...`;
 }
 
 function formToObject() {
   const data = new FormData(form);
   const obj = {};
   for (const [key, value] of data.entries()) obj[key] = value.trim ? value.trim() : value;
-  obj.demandaId = demandaIdInput.value || gerarId();
   obj.dataEnvio = new Date().toISOString();
   obj.statusInicial = 'Recebida';
   obj.prioridadeCalculada = calcularPrioridade().label;
@@ -139,7 +135,7 @@ function formatDateTime(value) {
 
 function montarRevisao(obj) {
   const rows = [
-    ['ID da demanda', obj.demandaId],
+    ['Protocolo', mensagemProtocolo()],
     ['Solicitante', `${obj.nomeSolicitante} · ${obj.emailSolicitante}`],
     ['Regional/Distrital', obj.regional],
     ['Tipo de demanda', obj.tipoDemanda],
@@ -197,7 +193,6 @@ form.addEventListener('input', atualizarResumo);
 form.addEventListener('change', atualizarResumo);
 
 document.getElementById('revisarBtn').addEventListener('click', () => {
-  if (!demandaIdInput.value) demandaIdInput.value = gerarId();
   const obj = formToObject();
   montarRevisao(obj);
   reviewDialog.showModal();
@@ -214,12 +209,18 @@ document.getElementById('limparBtn').addEventListener('click', () => {
 document.getElementById('fecharModal').addEventListener('click', () => reviewDialog.close());
 document.getElementById('fecharModal2').addEventListener('click', () => reviewDialog.close());
 document.getElementById('fecharSucesso').addEventListener('click', () => successDialog.close());
+document.getElementById('novaSolicitacaoBtn')?.addEventListener('click', () => {
+  successDialog.close();
+  form.reset();
+  demandaIdInput.value = '';
+  atualizarResumo();
+  document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!validarForm()) return;
 
-  if (!demandaIdInput.value) demandaIdInput.value = gerarId();
   const obj = formToObject();
 
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -228,7 +229,9 @@ form.addEventListener('submit', async (event) => {
 
   try {
     const result = await enviarParaEndpoint(obj);
-    successText.innerHTML = `ID da solicitação: <strong>${escapeHtml(obj.demandaId)}</strong><br>Status inicial: <strong>Recebida</strong><br>Modo: <strong>${result.modo === 'demo' ? 'demonstração local' : 'integrado ao Apps Script'}</strong>`;
+    successText.innerHTML = result.modo === 'demo'
+      ? `Solicitação salva em <strong>modo demonstração local</strong>.<br>Configure o Apps Script para gerar o protocolo oficial.`
+      : `Status inicial: <strong>Recebida</strong><br>Protocolo: <strong>gerado automaticamente e enviado por e-mail</strong><br>Modo: <strong>integrado ao Apps Script</strong>`;
     successDialog.showModal();
     form.reset();
     demandaIdInput.value = '';
@@ -241,5 +244,17 @@ form.addEventListener('submit', async (event) => {
     submitBtn.textContent = 'Enviar solicitação';
   }
 });
+
+function limparResiduosDoNavegador() {
+  // Alguns navegadores restauram automaticamente textos digitados em campos de formulário.
+  // Esse bloco impede que um valor acidental, como "1404", reapareça em Informações adicionais.
+  const campoContexto = form?.elements?.contexto;
+  if (campoContexto && campoContexto.value.trim() === '1404') {
+    campoContexto.value = '';
+  }
+}
+
+window.addEventListener('pageshow', limparResiduosDoNavegador);
+window.addEventListener('load', limparResiduosDoNavegador);
 
 atualizarResumo();
