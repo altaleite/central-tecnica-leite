@@ -17,10 +17,12 @@ const requiredLabels = {
   podeRemoto: 'Atendimento remoto possível',
   objetivo: 'Objetivo da solicitação',
   tecnicoPreferencial: 'Técnico demandado',
+  tecnicoObrigatorio: 'Esse técnico é obrigatório?',
   opcao1Inicio: 'Opção 1 — início',
   opcao1Fim: 'Opção 1 — fim',
   urgencia: 'Urgência',
   impacto: 'Impacto principal',
+  risco: 'Risco se não houver atendimento',
   ciencia: 'Ciência'
 };
 
@@ -219,7 +221,7 @@ document.getElementById('limparBtn').addEventListener('click', () => {
   if (!ok) return;
   form.reset();
   demandaIdInput.value = '';
-  configurarAtendimentoRemotoObrigatorio();
+  configurarCamposObrigatoriosExtras();
   atualizarResumo();
 });
 
@@ -230,7 +232,7 @@ document.getElementById('novaSolicitacaoBtn')?.addEventListener('click', () => {
   successDialog.close();
   form.reset();
   demandaIdInput.value = '';
-  configurarAtendimentoRemotoObrigatorio();
+  configurarCamposObrigatoriosExtras();
   atualizarResumo();
   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -253,7 +255,7 @@ form.addEventListener('submit', async (event) => {
     successDialog.showModal();
     form.reset();
     demandaIdInput.value = '';
-    configurarAtendimentoRemotoObrigatorio();
+    configurarCamposObrigatoriosExtras();
     atualizarResumo();
   } catch (error) {
     console.error(error);
@@ -264,20 +266,11 @@ form.addEventListener('submit', async (event) => {
   }
 });
 
-function configurarAtendimentoRemotoObrigatorio() {
-  const campo = form?.elements?.podeRemoto;
-  if (!campo) return;
-
-  campo.required = true;
-
-  const label = campo.closest('label');
-  if (!label || label.querySelector('[data-required-star="podeRemoto"]')) return;
-
-  const star = document.createElement('span');
-  star.textContent = '*';
-  star.dataset.requiredStar = 'podeRemoto';
-  star.setAttribute('aria-hidden', 'true');
-  label.insertBefore(star, campo);
+function configurarCamposObrigatoriosExtras() {
+  ['podeRemoto', 'tecnicoObrigatorio', 'risco'].forEach((nome) => {
+    const campo = form?.elements?.[nome];
+    if (campo) campo.required = true;
+  });
 }
 
 function limparResiduosDoNavegador() {
@@ -292,5 +285,5 @@ function limparResiduosDoNavegador() {
 window.addEventListener('pageshow', limparResiduosDoNavegador);
 window.addEventListener('load', limparResiduosDoNavegador);
 
-configurarAtendimentoRemotoObrigatorio();
+configurarCamposObrigatoriosExtras();
 atualizarResumo();
