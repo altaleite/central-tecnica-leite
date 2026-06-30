@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=layout-final-asterisco-inline-20260630" />
 </head>
 <body>
   <header class="hero compact-hero" id="topo">
@@ -78,7 +78,8 @@
           <p class="eyebrow">Nova demanda</p>
           <h2>Solicitar agenda técnica</h2>
           <p>
-            Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem, prioridade e disponibilidade do técnico demandado.
+            Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem,
+            prioridade e disponibilidade do técnico demandado.
           </p>
         </div>
       </div>
@@ -87,22 +88,22 @@
         <input type="hidden" id="demandaId" name="demandaId" />
         <input type="hidden" id="prioridadeCalculada" name="prioridadeCalculada" />
 
-        <div class="form-layout">
+        <div class="form-layout full-width">
           <div class="form-main">
             <fieldset class="form-card">
               <legend><span>1</span> Dados do solicitante</legend>
               <p class="card-help">Identifique quem está abrindo a demanda e quem deve receber o retorno formal.</p>
               <div class="grid two">
                 <label>
-                  Nome do solicitante <span>*</span>
+                  <span class="label-text">Nome do solicitante<span class="req">*</span></span>
                   <input type="text" name="nomeSolicitante" required placeholder="Ex.: Rafael Azevedo" />
                 </label>
                 <label>
-                  E-mail de retorno <span>*</span>
+                  <span class="label-text">E-mail de retorno<span class="req">*</span></span>
                   <input type="email" name="emailSolicitante" required placeholder="nome@empresa.com" />
                 </label>
                 <label>
-                  Função <span>*</span>
+                  <span class="label-text">Função<span class="req">*</span></span>
                   <select name="funcao" required>
                     <option value="">Selecione</option>
                     <option>Distrital</option>
@@ -113,7 +114,7 @@
                   </select>
                 </label>
                 <label>
-                  Regional/Distrital <span>*</span>
+                  <span class="label-text">Regional/Distrital<span class="req">*</span></span>
                   <input type="text" name="regional" required placeholder="Ex.: Triângulo Mineiro" />
                 </label>
               </div>
@@ -124,7 +125,7 @@
               <p class="card-help">Descreva o objetivo e o tipo de suporte técnico necessário.</p>
               <div class="grid two">
                 <label>
-                  Tipo de demanda <span>*</span>
+                  <span class="label-text">Tipo de demanda<span class="req">*</span></span>
                   <select name="tipoDemanda" required>
                     <option value="">Selecione</option>
                     <option>Genética - Leite Europeu</option>
@@ -140,7 +141,7 @@
                   </select>
                 </label>
                 <label>
-                  Atendimento remoto possível? <span>*</span>
+                  <span class="label-text">Atendimento remoto possível?<span class="req">*</span></span>
                   <select name="podeRemoto" required>
                     <option value="">Selecione</option>
                     <option>Sim</option>
@@ -150,11 +151,11 @@
                 </label>
               </div>
               <label>
-                Objetivo da solicitação <span>*</span>
+                <span class="label-text">Objetivo da solicitação<span class="req">*</span></span>
                 <textarea name="objetivo" required rows="4" maxlength="900" placeholder="Descreva o objetivo da demanda e o resultado esperado."></textarea>
               </label>
               <label>
-                Informações adicionais
+                <span class="label-text">Informações adicionais</span>
                 <textarea name="contexto" rows="3" maxlength="900" autocomplete="off" placeholder="Inclua dados relevantes, contexto, links, indicadores, histórico ou observações importantes."></textarea>
               </label>
             </fieldset>
@@ -164,7 +165,7 @@
               <p class="card-help">Selecione o técnico demandado e informe três opções de agenda, sempre com início e fim.</p>
               <div class="grid two">
                 <label>
-                  Técnico demandado <span>*</span>
+                  <span class="label-text">Técnico demandado<span class="req">*</span></span>
                   <select name="tecnicoPreferencial" required>
                     <option value="">Selecione</option>
                     <option>Alexandre Scarpa</option>
@@ -185,7 +186,7 @@
                   </select>
                 </label>
                 <label>
-                  Esse técnico é obrigatório? <span>*</span>
+                  <span class="label-text">Esse técnico é obrigatório?<span class="req">*</span></span>
                   <select name="tecnicoObrigatorio" required>
                     <option value="">Selecione</option>
                     <option>Sim, precisa ser esse técnico</option>
@@ -195,19 +196,19 @@
                 </label>
               </div>
               <label>
-                Justificativa para o técnico indicado
+                <span class="label-text">Justificativa para o técnico indicado</span>
                 <textarea name="justificativaTecnico" rows="3" maxlength="700" placeholder="Explique se há histórico, especialidade necessária ou contexto estratégico."></textarea>
               </label>
               <div class="agenda-grid">
                 <div class="agenda-option">
-                  <h4>Opção 1 <span>*</span></h4>
+                  <h4>Opção 1<span class="req">*</span></h4>
                   <div class="grid two inner">
                     <label>
-                      Início <span>*</span>
+                      <span class="label-text">Início<span class="req">*</span></span>
                       <input type="date" name="opcao1Inicio" required />
                     </label>
                     <label>
-                      Fim <span>*</span>
+                      <span class="label-text">Fim<span class="req">*</span></span>
                       <input type="date" name="opcao1Fim" required />
                     </label>
                   </div>
@@ -216,11 +217,11 @@
                   <h4>Opção 2</h4>
                   <div class="grid two inner">
                     <label>
-                      Início
+                      <span class="label-text">Início</span>
                       <input type="date" name="opcao2Inicio" />
                     </label>
                     <label>
-                      Fim
+                      <span class="label-text">Fim</span>
                       <input type="date" name="opcao2Fim" />
                     </label>
                   </div>
@@ -229,11 +230,11 @@
                   <h4>Opção 3</h4>
                   <div class="grid two inner">
                     <label>
-                      Início
+                      <span class="label-text">Início</span>
                       <input type="date" name="opcao3Inicio" />
                     </label>
                     <label>
-                      Fim
+                      <span class="label-text">Fim</span>
                       <input type="date" name="opcao3Fim" />
                     </label>
                   </div>
@@ -246,7 +247,7 @@
               <p class="card-help">Esses campos ajudam a ordenar a fila e definir a urgência real da demanda.</p>
               <div class="grid three">
                 <label>
-                  Urgência <span>*</span>
+                  <span class="label-text">Urgência<span class="req">*</span></span>
                   <select name="urgencia" id="urgencia" required>
                     <option value="">Selecione</option>
                     <option value="acima3">acima de 3 meses</option>
@@ -255,7 +256,7 @@
                   </select>
                 </label>
                 <label>
-                  Impacto principal <span>*</span>
+                  <span class="label-text">Impacto principal<span class="req">*</span></span>
                   <select name="impacto" id="impacto" required>
                     <option value="">Selecione</option>
                     <option value="tecnico">Técnico</option>
@@ -267,7 +268,7 @@
                   </select>
                 </label>
                 <label>
-                  Risco se não houver atendimento <span>*</span>
+                  <span class="label-text">Risco se não houver atendimento<span class="req">*</span></span>
                   <select name="risco" id="risco" required>
                     <option value="">Selecione</option>
                     <option value="alto">Alto</option>
@@ -316,7 +317,7 @@
       <p class="eyebrow">Solicitação registrada</p>
       <h2>Solicitação recebida com sucesso</h2>
       <p id="successText"></p>
-      <p class="help-text">
+      <p class="help-text dark">
         O protocolo da demanda será enviado por e-mail. Para abrir outro pedido, basta iniciar uma nova solicitação.
       </p>
       <div class="button-row center">
@@ -329,7 +330,7 @@
     <p>Central Técnica Leite — Programas e Serviços de Leite</p>
   </footer>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js?v=layout-final-asterisco-inline-20260630"></script>
 </body>
 </html>

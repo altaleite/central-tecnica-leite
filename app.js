@@ -1,8 +1,6 @@
 const form = document.getElementById('demandaForm');
 const demandaIdInput = document.getElementById('demandaId');
 const prioridadeInput = document.getElementById('prioridadeCalculada');
-const priorityPill = document.getElementById('priorityPill');
-const resumoTitulo = document.getElementById('resumoTitulo');
 const reviewDialog = document.getElementById('reviewDialog');
 const successDialog = document.getElementById('successDialog');
 const reviewContent = document.getElementById('reviewContent');
@@ -34,10 +32,13 @@ function mensagemProtocolo() {
 function formToObject() {
   const data = new FormData(form);
   const obj = {};
-  for (const [key, value] of data.entries()) obj[key] = value.trim ? value.trim() : value;
+  for (const [key, value] of data.entries()) {
+    obj[key] = value && value.trim ? value.trim() : value;
+  }
   obj.dataEnvio = new Date().toISOString();
   obj.statusInicial = 'Recebida';
   obj.prioridadeCalculada = calcularPrioridade().label;
+  prioridadeInput.value = obj.prioridadeCalculada;
   return obj;
 }
 
@@ -65,25 +66,8 @@ function calcularPrioridade() {
   return { label: 'Aguardando dados', className: '' };
 }
 
-function atualizarResumo() {
-  const prioridade = calcularPrioridade();
-
-  if (priorityPill) {
-    priorityPill.textContent = prioridade.label;
-    priorityPill.className = `priority-pill ${prioridade.className}`.trim();
-  }
-
-  if (prioridadeInput) {
-    prioridadeInput.value = prioridade.label;
-  }
-
-  if (resumoTitulo) {
-    const tipo = form.tipoDemanda?.value?.trim();
-    const tecnico = form.tecnicoPreferencial?.value?.trim();
-    resumoTitulo.textContent = tipo
-      ? `${tipo}${tecnico ? ` · ${tecnico}` : ''}`
-      : 'Demanda ainda não enviada';
-  }
+function atualizarPrioridadeOculta() {
+  if (prioridadeInput) prioridadeInput.value = calcularPrioridade().label;
 }
 
 function validarForm() {
@@ -94,7 +78,7 @@ function validarForm() {
     const field = form.elements[name];
     if (!field) return;
     const type = field.type;
-    const empty = type === 'checkbox' ? !field.checked : !field.value.trim();
+    const empty = type === 'checkbox' ? !field.checked : !String(field.value || '').trim();
     if (empty) {
       errors.push(requiredLabels[name]);
       field.classList.add('error');
@@ -109,12 +93,15 @@ function validarForm() {
 
   const inicio1 = form.opcao1Inicio.value;
   const fim1 = form.opcao1Fim.value;
-  if (inicio1 && fim1 && fim1 <= inicio1) {
-    errors.push('Opção 1 com fim posterior ao início');
+  if (inicio1 && fim1 && fim1 < inicio1) {
+    errors.push('Opção 1 com fim igual ou posterior ao início');
     form.opcao1Fim.classList.add('error');
   }
 
-  [['opcao2Inicio', 'opcao2Fim', 'Opção 2'], ['opcao3Inicio', 'opcao3Fim', 'Opção 3']].forEach(([inicio, fim, label]) => {
+  [
+    ['opcao2Inicio', 'opcao2Fim', 'Opção 2'],
+    ['opcao3Inicio', 'opcao3Fim', 'Opção 3']
+  ].forEach(([inicio, fim, label]) => {
     const ini = form.elements[inicio].value;
     const end = form.elements[fim].value;
     if ((ini && !end) || (!ini && end)) {
@@ -122,8 +109,8 @@ function validarForm() {
       form.elements[inicio].classList.add('error');
       form.elements[fim].classList.add('error');
     }
-    if (ini && end && end <= ini) {
-      errors.push(`${label} com fim posterior ao início`);
+    if (ini && end && end < ini) {
+      errors.push(`${label} com fim igual ou posterior ao início`);
       form.elements[fim].classList.add('error');
     }
   });
@@ -137,18 +124,19 @@ function validarForm() {
   return true;
 }
 
-function formatDateTime(value) {
+function formatDate(value) {
   if (!value) return '';
-
   const texto = String(value).trim();
   const matchData = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (matchData) {
-    return `${matchData[3]}/${matchData[2]}/${matchData[1]}`;
-  }
+  if (matchData) return `${matchData[3]}/${matchData[2]}/${matchData[1]}`;
 
   const date = new Date(texto);
   if (Number.isNaN(date.getTime())) return texto;
   return date.toLocaleDateString('pt-BR');
+}
+
+function optionText(selectElement) {
+  return selectElement?.options?.[selectElement.selectedIndex]?.text || '';
 }
 
 function montarRevisao(obj) {
@@ -157,12 +145,15 @@ function montarRevisao(obj) {
     ['Solicitante', `${obj.nomeSolicitante} · ${obj.emailSolicitante}`],
     ['Regional/Distrital', obj.regional],
     ['Tipo de demanda', obj.tipoDemanda],
+    ['Atendimento remoto possível?', obj.podeRemoto],
     ['Técnico demandado', obj.tecnicoPreferencial],
-    ['Opção 1', `${formatDateTime(obj.opcao1Inicio)} até ${formatDateTime(obj.opcao1Fim)}`],
-    ['Opção 2', obj.opcao2Inicio || obj.opcao2Fim ? `${formatDateTime(obj.opcao2Inicio)} até ${formatDateTime(obj.opcao2Fim)}` : 'Não informado'],
-    ['Opção 3', obj.opcao3Inicio || obj.opcao3Fim ? `${formatDateTime(obj.opcao3Inicio)} até ${formatDateTime(obj.opcao3Fim)}` : 'Não informado'],
-    ['Urgência', form.urgencia.options[form.urgencia.selectedIndex]?.text || ''],
-    ['Impacto', form.impacto.options[form.impacto.selectedIndex]?.text || ''],
+    ['Técnico obrigatório?', obj.tecnicoObrigatorio],
+    ['Opção 1', `${formatDate(obj.opcao1Inicio)} até ${formatDate(obj.opcao1Fim)}`],
+    ['Opção 2', obj.opcao2Inicio || obj.opcao2Fim ? `${formatDate(obj.opcao2Inicio)} até ${formatDate(obj.opcao2Fim)}` : 'Não informado'],
+    ['Opção 3', obj.opcao3Inicio || obj.opcao3Fim ? `${formatDate(obj.opcao3Inicio)} até ${formatDate(obj.opcao3Fim)}` : 'Não informado'],
+    ['Urgência', optionText(form.urgencia)],
+    ['Impacto', optionText(form.impacto)],
+    ['Risco', optionText(form.risco)],
     ['Prioridade estimada', obj.prioridadeCalculada],
     ['Objetivo', obj.objetivo]
   ];
@@ -207,33 +198,43 @@ async function enviarParaEndpoint(obj) {
   return { modo: 'apps-script' };
 }
 
-form.addEventListener('input', atualizarResumo);
-form.addEventListener('change', atualizarResumo);
+function limparFormulario() {
+  form.reset();
+  if (demandaIdInput) demandaIdInput.value = '';
+  atualizarPrioridadeOculta();
+  limparResiduosDoNavegador();
+}
 
-document.getElementById('revisarBtn').addEventListener('click', () => {
+function limparResiduosDoNavegador() {
+  const campoContexto = form?.elements?.contexto;
+  if (campoContexto && campoContexto.value.trim() === '1404') {
+    campoContexto.value = '';
+  }
+}
+
+form.addEventListener('input', atualizarPrioridadeOculta);
+form.addEventListener('change', atualizarPrioridadeOculta);
+
+const revisarBtn = document.getElementById('revisarBtn');
+revisarBtn?.addEventListener('click', () => {
   const obj = formToObject();
   montarRevisao(obj);
   reviewDialog.showModal();
 });
 
-document.getElementById('limparBtn').addEventListener('click', () => {
+const limparBtn = document.getElementById('limparBtn');
+limparBtn?.addEventListener('click', () => {
   const ok = confirm('Deseja limpar todos os campos da solicitação?');
   if (!ok) return;
-  form.reset();
-  demandaIdInput.value = '';
-  configurarCamposObrigatoriosExtras();
-  atualizarResumo();
+  limparFormulario();
 });
 
-document.getElementById('fecharModal').addEventListener('click', () => reviewDialog.close());
-document.getElementById('fecharModal2').addEventListener('click', () => reviewDialog.close());
-document.getElementById('fecharSucesso').addEventListener('click', () => successDialog.close());
+document.getElementById('fecharModal')?.addEventListener('click', () => reviewDialog.close());
+document.getElementById('fecharModal2')?.addEventListener('click', () => reviewDialog.close());
+document.getElementById('fecharSucesso')?.addEventListener('click', () => successDialog.close());
 document.getElementById('novaSolicitacaoBtn')?.addEventListener('click', () => {
   successDialog.close();
-  form.reset();
-  demandaIdInput.value = '';
-  configurarCamposObrigatoriosExtras();
-  atualizarResumo();
+  limparFormulario();
   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
@@ -242,7 +243,6 @@ form.addEventListener('submit', async (event) => {
   if (!validarForm()) return;
 
   const obj = formToObject();
-
   const submitBtn = form.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
@@ -253,10 +253,7 @@ form.addEventListener('submit', async (event) => {
       ? `Solicitação salva em <strong>modo demonstração local</strong>.<br>Configure o Apps Script para gerar o protocolo oficial.`
       : `Status inicial: <strong>Recebida</strong><br>Protocolo: <strong>gerado automaticamente e enviado por e-mail</strong><br>Modo: <strong>integrado ao Apps Script</strong>`;
     successDialog.showModal();
-    form.reset();
-    demandaIdInput.value = '';
-    configurarCamposObrigatoriosExtras();
-    atualizarResumo();
+    limparFormulario();
   } catch (error) {
     console.error(error);
     alert('Não foi possível enviar a solicitação. Verifique o endpoint configurado ou tente novamente.');
@@ -266,24 +263,8 @@ form.addEventListener('submit', async (event) => {
   }
 });
 
-function configurarCamposObrigatoriosExtras() {
-  ['podeRemoto', 'tecnicoObrigatorio', 'risco'].forEach((nome) => {
-    const campo = form?.elements?.[nome];
-    if (campo) campo.required = true;
-  });
-}
-
-function limparResiduosDoNavegador() {
-  // Alguns navegadores restauram automaticamente textos digitados em campos de formulário.
-  // Esse bloco impede que um valor acidental, como "1404", reapareça em Informações adicionais.
-  const campoContexto = form?.elements?.contexto;
-  if (campoContexto && campoContexto.value.trim() === '1404') {
-    campoContexto.value = '';
-  }
-}
-
 window.addEventListener('pageshow', limparResiduosDoNavegador);
-window.addEventListener('load', limparResiduosDoNavegador);
-
-configurarCamposObrigatoriosExtras();
-atualizarResumo();
+window.addEventListener('load', () => {
+  limparResiduosDoNavegador();
+  atualizarPrioridadeOculta();
+});
