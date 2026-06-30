@@ -249,9 +249,7 @@ form.addEventListener('submit', async (event) => {
 
   try {
     const result = await enviarParaEndpoint(obj);
-    successText.innerHTML = result.modo === 'demo'
-      ? `Solicitação salva em <strong>modo demonstração local</strong>.<br>Configure o Apps Script para gerar o protocolo oficial.`
-      : `Status inicial: <strong>Recebida</strong><br>Protocolo: <strong>gerado automaticamente e enviado por e-mail</strong><br>Modo: <strong>integrado ao Apps Script</strong>`;
+    successText.textContent = 'Para abrir outro pedido, basta iniciar uma nova solicitação.';
     successDialog.showModal();
     limparFormulario();
   } catch (error) {
