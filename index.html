@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Central Técnica Leite | Solicitação de Agenda</title>
-  <meta name="description" content="Central Técnica Leite — Solicitação de Agenda Técnica para demandas dos técnicos de leite." />
+  <meta name="description" content="Central Técnica Leite — Solicitação de Agenda Técnica." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=layout-final-asterisco-inline-20260630" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="hero compact-hero" id="topo">
@@ -28,13 +28,13 @@
         <h1>Central Técnica Leite</h1>
         <h2>Solicitação de Agenda Técnica</h2>
         <p class="lead">
-          Canal único para registrar, priorizar e organizar demandas técnicas dos Distritais e Regionais,
+          Canal único para registrar, priorizar e organizar demandas técnicas dos Distritais, Regionais e Técnicos,
           com retorno formal após triagem e validação da agenda.
         </p>
         <div class="hero-badges" aria-label="Benefícios do fluxo">
           <span>Entrada padronizada</span>
-          <span>Triagem técnica</span>
-          <span>Agenda validada</span>
+          <span>Solicitante por lista</span>
+          <span>Distrital vinculado</span>
           <span>Retorno por e-mail</span>
         </div>
       </div>
@@ -46,18 +46,18 @@
       <div class="section-title centered compact-title">
         <p class="eyebrow">Fluxo da solicitação</p>
         <h2>Da solicitação ao retorno formal.</h2>
-        <p>O fluxo organiza a entrada da demanda, a triagem técnica, a validação da agenda e o retorno ao solicitante.</p>
+        <p>O fluxo organiza a entrada da demanda, a triagem técnica, a validação da agenda e o retorno ao solicitante, técnico e distrital vinculado.</p>
       </div>
       <div class="process-grid horizontal-flow">
         <article>
           <span class="step">01</span>
           <h3>Solicitação</h3>
-          <p>O solicitante registra o tipo de demanda, objetivo, técnico demandado e opções de agenda.</p>
+          <p>O solicitante seleciona se é Distrital, Regional ou Técnico e registra a demanda.</p>
         </article>
         <article>
           <span class="step">02</span>
-          <h3>Triagem</h3>
-          <p>A equipe técnica avalia clareza, prioridade, escopo e informações disponíveis.</p>
+          <h3>Vínculo automático</h3>
+          <p>O sistema identifica o distrital vinculado quando a demanda vem de Regional ou Distrital.</p>
         </article>
         <article>
           <span class="step">03</span>
@@ -67,7 +67,7 @@
         <article>
           <span class="step">04</span>
           <h3>Retorno</h3>
-          <p>O solicitante recebe resposta formal: aprovação, ajuste, pendência ou negativa justificada.</p>
+          <p>O retorno formal vai para o solicitante, com cópia para técnico demandado e distrital vinculado.</p>
         </article>
       </div>
     </section>
@@ -78,8 +78,7 @@
           <p class="eyebrow">Nova demanda</p>
           <h2>Solicitar agenda técnica</h2>
           <p>
-            Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem,
-            prioridade e disponibilidade do técnico demandado.
+            Preencha com clareza. O envio registra a solicitação, mas a agenda depende de triagem, prioridade e disponibilidade do técnico demandado.
           </p>
         </div>
       </div>
@@ -88,34 +87,50 @@
         <input type="hidden" id="demandaId" name="demandaId" />
         <input type="hidden" id="prioridadeCalculada" name="prioridadeCalculada" />
 
-        <div class="form-layout full-width">
+        <div class="form-layout">
           <div class="form-main">
             <fieldset class="form-card">
               <legend><span>1</span> Dados do solicitante</legend>
-              <p class="card-help">Identifique quem está abrindo a demanda e quem deve receber o retorno formal.</p>
+              <p class="card-help">A solicitação deve ser aberta por Distrital, Regional ou Técnico. O e-mail manual aparece somente para Regional.</p>
               <div class="grid two">
                 <label>
-                  <span class="label-text">Nome do solicitante<span class="req">*</span></span>
-                  <input type="text" name="nomeSolicitante" required placeholder="Ex.: Rafael Azevedo" />
-                </label>
-                <label>
-                  <span class="label-text">E-mail de retorno<span class="req">*</span></span>
-                  <input type="email" name="emailSolicitante" required placeholder="nome@empresa.com" />
-                </label>
-                <label>
-                  <span class="label-text">Função<span class="req">*</span></span>
-                  <select name="funcao" required>
+                  <span class="field-label">Tipo de solicitante<span class="req">*</span></span>
+                  <select name="tipoSolicitante" id="tipoSolicitante" required>
                     <option value="">Selecione</option>
                     <option>Distrital</option>
                     <option>Regional</option>
-                    <option>Gerente</option>
-                    <option>Equipe técnica</option>
-                    <option>Outro</option>
+                    <option>Técnico</option>
                   </select>
                 </label>
                 <label>
-                  <span class="label-text">Regional/Distrital<span class="req">*</span></span>
-                  <input type="text" name="regional" required placeholder="Ex.: Triângulo Mineiro" />
+                  <span class="field-label">Solicitante<span class="req">*</span></span>
+                  <select name="nomeSolicitante" id="nomeSolicitante" required disabled>
+                    <option value="">Selecione o tipo primeiro</option>
+                  </select>
+                </label>
+                <label id="emailSolicitanteWrap" class="conditional-field is-hidden">
+                  <span class="field-label">E-mail de retorno<span class="req">*</span></span>
+                  <input type="email" name="emailSolicitante" id="emailSolicitante" placeholder="nome@altagenetics.com" />
+                  <small class="autofill-note">Obrigatório somente quando o solicitante for Regional.</small>
+                </label>
+                <label>
+                  <span class="field-label">Distrital vinculado<span class="req">*</span></span>
+                  <select name="distritalVinculado" id="distritalVinculado" required>
+                    <option value="">Selecione</option>
+                    <option>André Navarro</option>
+                    <option>Darci D&#x27;Anuncio</option>
+                    <option>Edmarcos Oliveira</option>
+                    <option>Francisco Hermano</option>
+                    <option>Glauco Freire</option>
+                    <option>Marco Antônio Oliveira</option>
+                    <option>Marcos Longas</option>
+                    <option>Rodrigo Frigoni</option>
+                    <option>Rodrigo Longo</option>
+                    <option>Rodrigo Peixoto</option>
+                    <option>Rodrigo Rodrigues</option>
+                    <option>Timótheo Silveira</option>
+                  </select>
+                  <small class="autofill-note" id="distritalHelp">Será preenchido automaticamente para Distrital ou Regional.</small>
                 </label>
               </div>
             </fieldset>
@@ -125,7 +140,7 @@
               <p class="card-help">Descreva o objetivo e o tipo de suporte técnico necessário.</p>
               <div class="grid two">
                 <label>
-                  <span class="label-text">Tipo de demanda<span class="req">*</span></span>
+                  <span class="field-label">Tipo de demanda<span class="req">*</span></span>
                   <select name="tipoDemanda" required>
                     <option value="">Selecione</option>
                     <option>Genética - Leite Europeu</option>
@@ -141,7 +156,7 @@
                   </select>
                 </label>
                 <label>
-                  <span class="label-text">Atendimento remoto possível?<span class="req">*</span></span>
+                  <span class="field-label">Atendimento remoto possível?<span class="req">*</span></span>
                   <select name="podeRemoto" required>
                     <option value="">Selecione</option>
                     <option>Sim</option>
@@ -151,11 +166,11 @@
                 </label>
               </div>
               <label>
-                <span class="label-text">Objetivo da solicitação<span class="req">*</span></span>
+                <span class="field-label">Objetivo da solicitação<span class="req">*</span></span>
                 <textarea name="objetivo" required rows="4" maxlength="900" placeholder="Descreva o objetivo da demanda e o resultado esperado."></textarea>
               </label>
               <label>
-                <span class="label-text">Informações adicionais</span>
+                <span class="field-label">Informações adicionais</span>
                 <textarea name="contexto" rows="3" maxlength="900" autocomplete="off" placeholder="Inclua dados relevantes, contexto, links, indicadores, histórico ou observações importantes."></textarea>
               </label>
             </fieldset>
@@ -165,7 +180,7 @@
               <p class="card-help">Selecione o técnico demandado e informe três opções de agenda, sempre com início e fim.</p>
               <div class="grid two">
                 <label>
-                  <span class="label-text">Técnico demandado<span class="req">*</span></span>
+                  <span class="field-label">Técnico demandado<span class="req">*</span></span>
                   <select name="tecnicoPreferencial" required>
                     <option value="">Selecione</option>
                     <option>Alexandre Scarpa</option>
@@ -178,7 +193,6 @@
                     <option>Itamar Aguiar</option>
                     <option>Natália Espanhol</option>
                     <option>Paula Tiveron</option>
-                    <option>Priscila Corradi</option>
                     <option>Rafael Azevedo</option>
                     <option>Rayce Ferreira</option>
                     <option>Reginaldo Santos</option>
@@ -186,7 +200,7 @@
                   </select>
                 </label>
                 <label>
-                  <span class="label-text">Esse técnico é obrigatório?<span class="req">*</span></span>
+                  <span class="field-label">Esse técnico é obrigatório?<span class="req">*</span></span>
                   <select name="tecnicoObrigatorio" required>
                     <option value="">Selecione</option>
                     <option>Sim, precisa ser esse técnico</option>
@@ -196,19 +210,19 @@
                 </label>
               </div>
               <label>
-                <span class="label-text">Justificativa para o técnico indicado</span>
+                <span class="field-label">Justificativa para o técnico indicado</span>
                 <textarea name="justificativaTecnico" rows="3" maxlength="700" placeholder="Explique se há histórico, especialidade necessária ou contexto estratégico."></textarea>
               </label>
               <div class="agenda-grid">
                 <div class="agenda-option">
-                  <h4>Opção 1<span class="req">*</span></h4>
+                  <h4>Opção 1 <span>*</span></h4>
                   <div class="grid two inner">
                     <label>
-                      <span class="label-text">Início<span class="req">*</span></span>
+                      <span class="field-label">Início<span class="req">*</span></span>
                       <input type="date" name="opcao1Inicio" required />
                     </label>
                     <label>
-                      <span class="label-text">Fim<span class="req">*</span></span>
+                      <span class="field-label">Fim<span class="req">*</span></span>
                       <input type="date" name="opcao1Fim" required />
                     </label>
                   </div>
@@ -217,11 +231,11 @@
                   <h4>Opção 2</h4>
                   <div class="grid two inner">
                     <label>
-                      <span class="label-text">Início</span>
+                      <span class="field-label">Início</span>
                       <input type="date" name="opcao2Inicio" />
                     </label>
                     <label>
-                      <span class="label-text">Fim</span>
+                      <span class="field-label">Fim</span>
                       <input type="date" name="opcao2Fim" />
                     </label>
                   </div>
@@ -230,11 +244,11 @@
                   <h4>Opção 3</h4>
                   <div class="grid two inner">
                     <label>
-                      <span class="label-text">Início</span>
+                      <span class="field-label">Início</span>
                       <input type="date" name="opcao3Inicio" />
                     </label>
                     <label>
-                      <span class="label-text">Fim</span>
+                      <span class="field-label">Fim</span>
                       <input type="date" name="opcao3Fim" />
                     </label>
                   </div>
@@ -247,7 +261,7 @@
               <p class="card-help">Esses campos ajudam a ordenar a fila e definir a urgência real da demanda.</p>
               <div class="grid three">
                 <label>
-                  <span class="label-text">Urgência<span class="req">*</span></span>
+                  <span class="field-label">Urgência<span class="req">*</span></span>
                   <select name="urgencia" id="urgencia" required>
                     <option value="">Selecione</option>
                     <option value="acima3">acima de 3 meses</option>
@@ -256,7 +270,7 @@
                   </select>
                 </label>
                 <label>
-                  <span class="label-text">Impacto principal<span class="req">*</span></span>
+                  <span class="field-label">Impacto principal<span class="req">*</span></span>
                   <select name="impacto" id="impacto" required>
                     <option value="">Selecione</option>
                     <option value="tecnico">Técnico</option>
@@ -268,7 +282,7 @@
                   </select>
                 </label>
                 <label>
-                  <span class="label-text">Risco se não houver atendimento<span class="req">*</span></span>
+                  <span class="field-label">Risco se não houver atendimento<span class="req">*</span></span>
                   <select name="risco" id="risco" required>
                     <option value="">Selecione</option>
                     <option value="alto">Alto</option>
@@ -314,19 +328,18 @@
     <div class="modal-content success">
       <button class="modal-close" id="fecharSucesso" aria-label="Fechar">×</button>
       <div class="success-icon">✓</div>
+      <p class="eyebrow">Solicitação enviada</p>
       <h2>Solicitação enviada com sucesso</h2>
-      <p id="successText" class="help-text dark">Para abrir outro pedido, basta iniciar uma nova solicitação.</p>
-      <div class="button-row center">
-        <button class="btn primary" id="novaSolicitacaoBtn" type="button">Nova solicitação</button>
+      <p id="successText"></p>
+      <p class="help-text">Para abrir outro pedido, basta iniciar uma nova solicitação.</p>
+      <div class="button-row right">
+        <button class="btn primary" id="novaSolicitacaoBtn">Nova solicitação</button>
       </div>
     </div>
   </dialog>
 
-  <footer>
-    <p>Central Técnica Leite — Programas e Serviços de Leite</p>
-  </footer>
-
-  <script src="./config.js"></script>
-  <script src="./app.js?v=success-message-20260630"></script>
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
